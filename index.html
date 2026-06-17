@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kích Hoạt Super Duolingo Miễn Phí</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Nunito -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #8b5cf6 0%, #d8b4fe 40%, #f5f3ff 100%);
+        }
+        /* Hiệu ứng nút bấm 3D đặc trưng của Duolingo */
+        .btn-duo-green {
+            background-color: #58cc02;
+            border-bottom: 5px solid #46a302;
+            transition: all 0.1s ease;
+        }
+        .btn-duo-green:active {
+            border-bottom-width: 0px;
+            transform: translateY(5px);
+        }
+        .btn-duo-purple {
+            background-color: #8b5cf6;
+            border-bottom: 5px solid #6d28d9;
+            transition: all 0.1s ease;
+        }
+        .btn-duo-purple:active {
+            border-bottom-width: 0px;
+            transform: translateY(5px);
+        }
+        .btn-duo-gold {
+            background-color: #ffc800;
+            border-bottom: 5px solid #e6b400;
+            transition: all 0.1s ease;
+        }
+        .btn-duo-gold:active {
+            border-bottom-width: 0px;
+            transform: translateY(5px);
+        }
+        .btn-duo-red {
+            background-color: #ff4b4b;
+            border-bottom: 5px solid #ea2b2b;
+            transition: all 0.1s ease;
+        }
+        .btn-duo-red:active {
+            border-bottom-width: 0px;
+            transform: translateY(5px);
+        }
+        /* Hiệu ứng phát sáng nhẹ nhàng cho Super Card */
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 10px 40px rgba(139, 92, 246, 0.2); }
+            50% { box-shadow: 0 15px 50px rgba(139, 92, 246, 0.4); }
+        }
+        .super-card {
+            animation: pulse-glow 3s infinite;
+        }
+        /* Hiệu ứng nhịp đập nhẹ cho nút liên hệ Facebook góc màn hình */
+        @keyframes fb-pulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4); }
+            50% { transform: scale(1.08); box-shadow: 0 6px 25px rgba(139, 92, 246, 0.7); }
+        }
+        .fb-float-btn {
+            animation: fb-pulse 2s infinite ease-in-out;
+        }
+        .fb-float-btn:hover {
+            animation: none;
+            transform: scale(1.15);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4 relative pb-24">
+
+    <!-- Container chính - Thiết kế Tím Trắng mượt mà dạng Glassmorphic sáng -->
+    <div id="main-card" class="max-w-md w-full bg-white/95 rounded-[2.5rem] p-7 text-center text-slate-800 shadow-[0_20px_50px_rgba(139,92,246,0.15)] border border-purple-100 relative overflow-hidden super-card">
+        
+        <!-- Ảnh Cú Duo Super được bo góc cực mạnh đặt giữa màn -->
+        <div id="logo-container" class="flex justify-center mb-6">
+            <div class="relative group">
+                <!-- Hào quang nền sáng rực rỡ -->
+                <div id="glow-bg" class="absolute inset-0 bg-[#a78bfa] rounded-[2rem] blur-xl opacity-30 group-hover:opacity-50 transition-all duration-300"></div>
+                <!-- Ảnh Cú Super với Fallback dự phòng -->
+                <img src="https://cdn2.fptshop.com.vn/unsafe/1920x0/filters:format(webp):quality(75)/2024_1_25_638417690413349336_super-duolingo.jpg" 
+                     alt="Super Duolingo" 
+                     class="w-32 h-32 object-cover rounded-[2rem] relative z-10 shadow-xl border-4 border-white transition-transform duration-300 hover:scale-105"
+                     onerror="this.src='https://assets.duolingo.com/images/super/super-duo-avatar.png'">
+            </div>
+        </div>
+
+        <!-- Màn hình 0: Lựa chọn Đăng nhập ban đầu -->
+        <div id="step-login-choice" class="space-y-6">
+            <h1 class="text-2xl font-black text-slate-900 tracking-wide uppercase">Chào mừng bạn</h1>
+            <p class="text-slate-600 text-sm leading-relaxed font-semibold">Vui lòng tiếp tục để nhận quyền lợi gói học tập nhóm Super Duolingo từ Trần Khải Minh.</p>
+            
+            <div class="space-y-4 pt-2 flex flex-col items-center w-full">
+                <!-- Phóng to nút đăng nhập của khách (Vào Học Với Bạn Bè) -->
+                <button onclick="enterAsFriend()" class="w-full py-5 px-8 rounded-2xl text-white font-black text-xl btn-duo-green flex items-center justify-center cursor-pointer shadow-lg hover:brightness-105 transition-all duration-150">
+                    <span>Vào Học Với Bạn Bè</span>
+                </button>
+                
+                <!-- Thu nhỏ nút đăng nhập admin tối đa thành liên kết tinh tế -->
+                <button onclick="showAdminLoginForm()" class="text-xs text-slate-400 hover:text-[#8b5cf6] font-bold transition-all duration-150 flex items-center gap-1 opacity-70 hover:opacity-100 cursor-pointer pt-3">
+                    <span>🔑 Đăng nhập quản trị viên</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Màn hình Đăng nhập Admin -->
+        <div id="step-admin-login" class="hidden space-y-4 text-left">
+            <div class="flex items-center gap-2 mb-2">
+                <button onclick="goToStep('step-login-choice')" class="text-[#8b5cf6] font-bold text-sm hover:underline">← Quay lại</button>
+            </div>
+            <h2 class="text-xl font-black text-slate-900 text-center">Đăng Nhập Admin</h2>
+            <p class="text-slate-500 text-xs text-center mb-4">Vui lòng xác thực tài khoản quản trị của bạn</p>
+            
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1">Email Quản Trị</label>
+                    <input type="email" id="admin-email" placeholder="example@gmail.com" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm text-slate-800 focus:outline-none focus:border-[#8b5cf6]" required>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-1">Mật khẩu</label>
+                    <input type="password" id="admin-password" placeholder="••••••••" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm text-slate-800 focus:outline-none focus:border-[#8b5cf6]" required>
+                </div>
+                <button onclick="handleAdminLogin()" class="w-full py-3.5 mt-2 rounded-xl text-black font-extrabold text-md btn-duo-gold text-center cursor-pointer">
+                    Xác Nhận Đăng Nhập
+                </button>
+            </div>
+        </div>
+
+        <!-- Màn hình Quản Trị Link (Admin) -->
+        <div id="step-admin-dashboard" class="hidden space-y-4 text-left">
+            <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                <div class="text-[#8b5cf6] font-black">⚙️ ADMIN CONTROL</div>
+                <button onclick="logoutAdmin()" class="bg-red-50 hover:bg-red-100 text-red-500 px-3 py-1 rounded-lg text-xs font-bold transition">Đăng xuất</button>
+            </div>
+            
+            <p class="text-xs text-slate-600">Chào bạn <span class="text-[#8b5cf6] font-bold">Trần Khải Minh</span>. Cập nhật đường link mới cho nhóm tại đây.</p>
+
+            <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100 space-y-3">
+                <label class="block text-xs font-extrabold text-slate-500 uppercase tracking-wider">Link mời hiện tại:</label>
+                <div class="bg-white p-3 rounded-lg border border-slate-100 break-all">
+                    <p id="current-saved-link" class="text-xs text-slate-500 font-mono">Đang tải...</p>
+                </div>
+                
+                <div class="pt-2">
+                    <label class="block text-xs font-extrabold text-slate-500 uppercase tracking-wider mb-1">Cập nhật Link mới:</label>
+                    <input type="url" id="new-invite-link" placeholder="https://invite.duolingo.com/..." class="w-full bg-white border border-slate-200 rounded-xl p-3 text-xs text-slate-800 font-mono focus:outline-none focus:border-[#8b5cf6]">
+                </div>
+                
+                <p class="text-[10px] text-purple-600 font-semibold leading-relaxed">💡 Lưu ý: Mỗi khi nhấn Lưu, hệ thống sẽ thiết lập lại mốc thời gian và tự động bắt đầu đếm ngược 7 ngày mới cho toàn bộ thành viên.</p>
+                
+                <button onclick="updateInviteLink()" class="w-full py-3.5 rounded-xl text-white font-extrabold text-sm btn-duo-green text-center cursor-pointer shadow-md">
+                    💾 Lưu & Khởi Chạy 7 Ngày Mới
+                </button>
+            </div>
+        </div>
+
+        <!-- Màn hình 1: Tiêu đề & Giới thiệu lời mời (Khách) -->
+        <div id="step-intro" class="hidden space-y-4">
+            <span class="bg-[#8b5cf6]/10 text-[#8b5cf6] font-black text-xs px-3.5 py-1.5 rounded-full uppercase tracking-wider">
+                Gói Trải Nghiệm Cao Cấp
+            </span>
+            
+            <h1 class="text-2xl md:text-3xl font-black text-slate-900 tracking-wide leading-snug">
+                Kích hoạt <span class="text-[#8b5cf6]">Super Duolingo</span> Miễn Phí
+            </h1>
+            
+            <!-- Tên Trần Khải Minh nổi bật -->
+            <div class="flex items-center justify-center gap-1.5 text-amber-500 font-black text-md bg-amber-500/10 py-1.5 px-4 rounded-full max-w-max mx-auto border border-amber-500/10">
+                <span>⚡</span>
+                <span>Trần Khải Minh</span>
+            </div>
+            
+            <!-- Các lợi ích của Super Duolingo -->
+            <div class="bg-slate-50 rounded-2xl p-4 text-left text-sm space-y-3 my-5 border border-slate-100">
+                <div class="flex items-center gap-3">
+                    <span class="text-2xl">❤️</span>
+                    <div>
+                        <p class="font-extrabold text-slate-800">Vô hạn Tim học tập</p>
+                        <p class="text-slate-500 text-xs font-semibold">Tự tin làm bài tập, không lo sợ hết lượt tim giữa chừng.</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="text-2xl">⚡</span>
+                    <div>
+                        <p class="font-extrabold text-slate-800">Loại bỏ toàn bộ quảng cáo</p>
+                        <p class="text-slate-500 text-xs font-semibold">Bài giảng liền mạch hoàn toàn, không có quảng cáo làm phiền.</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="text-2xl">🛡️</span>
+                    <div>
+                        <p class="font-extrabold text-slate-800">Luyện lỗi sai không giới hạn</p>
+                        <p class="text-slate-500 text-xs font-semibold">Ôn tập các bài mắc lỗi và kiểm tra vượt cấp miễn phí.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nút hành động chính -->
+            <button onclick="tryToActivate()" class="w-full py-4 px-6 rounded-xl text-white font-extrabold text-lg btn-duo-green flex items-center justify-center gap-2 cursor-pointer shadow-lg">
+                <span>⚡ Nhận Duolingo Super</span>
+            </button>
+            
+            <button onclick="goToStep('step-login-choice')" class="text-xs text-slate-400 hover:text-slate-600 underline mt-2 font-semibold">Quay lại trang chính</button>
+        </div>
+
+        <!-- Màn hình 2: Thanh chạy kích hoạt từ 0% -> 100% -->
+        <div id="step-loading" class="hidden space-y-6 py-6">
+            <h2 class="text-xl font-black text-slate-800">Đang kích hoạt gói Super cho bạn...</h2>
+            
+            <!-- Thanh tiến trình Duolingo -->
+            <div class="w-full bg-slate-100 rounded-full h-6 p-1 overflow-hidden border border-slate-200">
+                <div id="progress-bar" class="bg-gradient-to-r from-[#8b5cf6] to-[#58cc02] h-full rounded-full w-0 transition-all duration-100 ease-out flex items-center justify-end pr-2">
+                    <span id="progress-percent" class="text-[11px] font-black text-white">0%</span>
+                </div>
+            </div>
+
+            <!-- Trạng thái kết nối động -->
+            <div class="h-10 flex items-center justify-center">
+                <p id="loading-status" class="text-sm text-[#8b5cf6] font-black italic">
+                    Đang kết nối tới máy chủ Duolingo...
+                </p>
+            </div>
+
+            <!-- Châm ngôn hài hước của cú Duo -->
+            <div class="bg-slate-50 rounded-2xl p-3.5 text-xs text-slate-600 flex items-center gap-3 border border-slate-100">
+                <span class="text-3xl">🦉</span>
+                <p class="text-left font-semibold leading-relaxed">"Đừng quên giữ chuỗi streak làm bài tập hàng ngày nhé bạn thân!"</p>
+            </div>
+        </div>
+
+        <!-- Màn hình 3: Thành công & Đồng hồ đếm ngược -->
+        <div id="step-success" class="hidden space-y-6 py-4">
+            <div class="text-6xl animate-bounce">🎉</div>
+            <h2 class="text-2xl font-black text-[#58cc02]">Kích Hoạt Thành Công!</h2>
+            <p class="text-slate-600 text-sm leading-relaxed font-semibold">
+                Bạn đã được chỉ định tham gia gói Super nhóm của <span class="font-extrabold text-[#8b5cf6]">Trần Khải Minh</span>. Hãy nhấn liên kết tham gia bên dưới!
+            </p>
+
+            <!-- Bộ đếm ngược thời gian thực 7 ngày -->
+            <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100 space-y-2">
+                <p class="text-[11px] text-slate-400 uppercase tracking-wider font-extrabold">Thời gian hiệu lực còn lại của gói học nhóm</p>
+                <div class="grid grid-cols-4 gap-2 text-center">
+                    <div class="bg-white rounded-xl p-2 border border-slate-100 shadow-sm">
+                        <span id="timer-days" class="block text-xl font-black text-[#8b5cf6]">07</span>
+                        <span class="text-[9px] text-slate-400 uppercase">Ngày</span>
+                    </div>
+                    <div class="bg-white rounded-xl p-2 border border-slate-100 shadow-sm">
+                        <span id="timer-hours" class="block text-xl font-black text-[#8b5cf6]">00</span>
+                        <span class="text-[9px] text-slate-400 uppercase">Giờ</span>
+                    </div>
+                    <div class="bg-white rounded-xl p-2 border border-slate-100 shadow-sm">
+                        <span id="timer-minutes" class="block text-xl font-black text-[#8b5cf6]">00</span>
+                        <span class="text-[9px] text-slate-400 uppercase">Phút</span>
+                    </div>
+                    <div class="bg-white rounded-xl p-2 border border-slate-100 shadow-sm">
+                        <span id="timer-seconds" class="block text-xl font-black text-amber-500">00</span>
+                        <span class="text-[9px] text-slate-400 uppercase">Giây</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nút liên kết nhóm động -->
+            <a id="join-group-btn" href="#" target="_blank" class="block w-full py-4 px-6 rounded-xl text-black font-black text-lg btn-duo-gold text-center shadow-lg transition duration-200 hover:scale-[1.01]">
+                🚀 Tham Gia Gói Ngay
+            </a>
+
+            <button onclick="goToStep('step-login-choice')" class="text-xs text-slate-400 hover:text-slate-600 underline mt-1 font-semibold">Trở về Trang chủ</button>
+        </div>
+
+    </div>
+
+    <!-- HỘP THOẠI THÔNG BÁO HẾT HẠN (MỚI: Thay thế cho việc khóa màn hình đỏ) -->
+    <div id="expired-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-sm rounded-[2rem] p-6 text-center border-4 border-red-400 shadow-2xl transform scale-95 transition-all duration-300">
+            <div class="text-5xl mb-3">⏳</div>
+            <h3 class="text-xl font-black text-red-500 mb-2">Gói Đã Hết Hạn</h3>
+            <p class="text-slate-600 text-sm leading-relaxed font-semibold mb-6">
+                Gói đã hết hạn, vui lòng đợi tầm 1-2 ngày hoặc liên hệ admin qua messenger ở góc dưới màn hình, xin cảm ơn!
+            </p>
+            <button onclick="closeExpiredModal()" class="w-full py-3.5 rounded-xl text-white font-extrabold text-md btn-duo-red">
+                Đã hiểu
+            </button>
+        </div>
+    </div>
+
+    <!-- ICON FACEBOOK TRÒN NỔI GÓC DƯỚI BÊN PHẢI -->
+    <a href="https://www.facebook.com/minh.tran.khai.2025/?locale=vi_VN" 
+       target="_blank" 
+       title="Liên hệ Trần Khải Minh"
+       class="fixed bottom-6 right-6 z-45 w-16 h-16 rounded-full overflow-hidden border-4 border-white shadow-2xl transition-all duration-300 fb-float-btn cursor-pointer flex items-center justify-center">
+        <img src="https://cdn.tgdd.vn/2020/03/GameApp/unnamed-200x200-2.png" 
+             alt="Facebook Trần Khải Minh" 
+             class="w-full h-full object-cover rounded-full"
+             onerror="this.src='https://assets.duolingo.com/images/super/super-duo-avatar.png'">
+    </a>
+
+    <!-- Hộp thông báo mượt mà (Được căn chỉnh vị trí tránh chồng chéo với nút góc) -->
+    <div id="custom-toast" class="fixed bottom-24 right-6 bg-slate-900 text-white font-bold px-4 py-3 rounded-xl shadow-2xl opacity-0 transform translate-y-2 transition-all duration-300 pointer-events-none text-sm z-50">
+        Đã sao chép!
+    </div>
+
+    <!-- Firebase Real-time Sync & Storage (Tuân thủ RULES) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const defaultInviteLink = "https://invite.duolingo.com/BDHTZTB5CWWKSDTBJNBPGJTE7E";
+        let currentInviteLink = defaultInviteLink;
+        let linkUpdatedAt = Date.now(); // Mốc thời gian mặc định ban đầu
+        let db, auth;
+        let appId = "default-app-id";
+        let isFirebaseInitialized = false;
+
+        try {
+            const firebaseConfigStr = typeof __firebase_config !== 'undefined' ? __firebase_config : null;
+            const envAppId = typeof __app_id !== 'undefined' ? __app_id : null;
+
+            if (firebaseConfigStr) {
+                const firebaseConfig = JSON.parse(firebaseConfigStr);
+                const app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+                appId = envAppId || "default-duo-super";
+                isFirebaseInitialized = true;
+            }
+        } catch (error) {
+            console.warn("Chạy offline cục bộ nhờ LocalStorage.");
+        }
+
+        async function authenticate() {
+            if (!isFirebaseInitialized) return;
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+            } catch (err) {
+                console.error("Xác thực Firebase thất bại:", err);
+            }
+        }
+
+        function listenToLinkUpdates() {
+            // Lấy dữ liệu dự phòng từ localStorage trước
+            const localLink = localStorage.getItem('duo_super_dynamic_link');
+            const localUpdatedAt = localStorage.getItem('duo_super_link_updated_at');
+            if (localLink) {
+                currentInviteLink = localLink;
+            }
+            if (localUpdatedAt) {
+                linkUpdatedAt = parseInt(localUpdatedAt);
+                window.linkUpdatedAt = linkUpdatedAt; // Chia sẻ biến ra môi trường toàn cục
+            }
+
+            if (isFirebaseInitialized && db) {
+                // Sử dụng strict path tuân thủ RULE 1
+                const configDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'config', 'invite');
+                
+                onSnapshot(configDocRef, (docSnap) => {
+                    if (docSnap.exists() && docSnap.data().url) {
+                        const cloudUrl = docSnap.data().url;
+                        const cloudUpdatedAt = docSnap.data().updatedAt || Date.now();
+                        
+                        currentInviteLink = cloudUrl;
+                        linkUpdatedAt = cloudUpdatedAt;
+                        window.linkUpdatedAt = cloudUpdatedAt;
+
+                        localStorage.setItem('duo_super_dynamic_link', cloudUrl);
+                        localStorage.setItem('duo_super_link_updated_at', cloudUpdatedAt);
+
+                        updateLocalUI(cloudUrl);
+                    } else {
+                        // Tạo tài liệu cấu hình ban đầu
+                        const initTime = Date.now();
+                        setDoc(configDocRef, { 
+                            url: defaultInviteLink, 
+                            updatedAt: initTime,
+                            lastUpdated: initTime 
+                        }, { merge: true });
+                    }
+                }, (error) => {
+                    console.error("Lỗi đồng bộ mây:", error);
+                });
+            } else {
+                updateLocalUI(currentInviteLink);
+            }
+        }
+
+        function updateLocalUI(url) {
+            const joinBtn = document.getElementById('join-group-btn');
+            if (joinBtn) joinBtn.href = url;
+
+            const adminCurrentLabel = document.getElementById('current-saved-link');
+            if (adminCurrentLabel) adminCurrentLabel.innerText = url;
+        }
+
+        window.addEventListener('DOMContentLoaded', async () => {
+            await authenticate();
+            listenToLinkUpdates();
+        });
+
+        // Hàm cập nhật Link mới từ phía Admin & đồng bộ mốc thời gian 7 ngày
+        window.updateInviteLink = async function() {
+            const inputElement = document.getElementById('new-invite-link');
+            let newUrl = inputElement.value.trim();
+
+            if (!newUrl) {
+                showToast("Vui lòng nhập đường link hợp lệ!");
+                return;
+            }
+
+            if (!newUrl.startsWith("http://") && !newUrl.startsWith("https://")) {
+                newUrl = "https://" + newUrl;
+            }
+
+            const now = Date.now();
+            linkUpdatedAt = now;
+            window.linkUpdatedAt = now;
+            currentInviteLink = newUrl;
+
+            // Lưu trực tiếp vào LocalStorage
+            localStorage.setItem('duo_super_dynamic_link', newUrl);
+            localStorage.setItem('duo_super_link_updated_at', now);
+            
+            // Xóa bộ nhớ đệm trạng thái kích hoạt cũ và trạng thái gửi mail
+            localStorage.removeItem('duo_super_activated_url');
+            localStorage.removeItem('duo_super_notified_expired_' + btoa(newUrl));
+
+            if (isFirebaseInitialized && db) {
+                try {
+                    const configDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'config', 'invite');
+                    await setDoc(configDocRef, { 
+                        url: newUrl, 
+                        updatedAt: now,
+                        lastUpdated: now 
+                    }, { merge: true });
+                    showToast("Cập nhật mây thành công! Khởi chạy 7 ngày mới. ✨");
+                } catch (e) {
+                    console.error("Lỗi ghi lên database:", e);
+                    showToast("Đã lưu thiết bị & khởi động lại 7 ngày!");
+                }
+            } else {
+                showToast("Đã lưu offline & khởi động lại 7 ngày!");
+            }
+
+            updateLocalUI(newUrl);
+            inputElement.value = "";
+        };
+    </script>
+
+    <!-- Script Xử lý Giao diện & Nghiệp vụ trang -->
+    <script>
+        const statusMessages = [
+            "Đang kết nối cấu hình từ Trần Khải Minh...",
+            "Đang kiểm duyệt điều kiện thành viên...",
+            "Đang cấu hình gói Super Duolingo...",
+            "Đang dọn dẹp các quảng cáo gián đoạn...",
+            "Cú Duo đang rà soát chuỗi chuyên cần...",
+            "Đang giải phóng giới hạn Tim...",
+            "Kích hoạt thành công! Chuẩn bị chuyển giao..."
+        ];
+
+        let countdownInterval;
+
+        function goToStep(stepId) {
+            const steps = [
+                'step-login-choice', 
+                'step-admin-login', 
+                'step-admin-dashboard', 
+                'step-intro', 
+                'step-loading', 
+                'step-success'
+            ];
+            
+            steps.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.add('hidden');
+            });
+
+            const target = document.getElementById(stepId);
+            if (target) target.classList.remove('hidden');
+        }
+
+        // Vào giao diện khách
+        function enterAsFriend() {
+            const localLink = localStorage.getItem('duo_super_dynamic_link');
+            const localUpdatedAt = localStorage.getItem('duo_super_link_updated_at');
+            
+            if (localLink && localUpdatedAt) {
+                const expiryTimestamp = parseInt(localUpdatedAt) + (7 * 24 * 60 * 60 * 1000);
+                const now = Date.now();
+                const activatedUrl = localStorage.getItem('duo_super_activated_url');
+                
+                // Nếu khách đã kích hoạt link hiện tại và link vẫn còn hạn -> Đưa thẳng tới đếm ngược
+                if (activatedUrl === localLink && now <= expiryTimestamp) {
+                    goToStep('step-success');
+                    startCountdownTimer(expiryTimestamp);
+                    return;
+                }
+            }
+            // Trong mọi trường hợp khác, luôn cho phép xem trang Intro chứ không khóa màn hình nữa
+            goToStep('step-intro');
+        }
+
+        // Bấm Kích Hoạt -> Hệ thống kiểm tra hạn sử dụng của gói
+        function tryToActivate() {
+            const localUpdatedAt = localStorage.getItem('duo_super_link_updated_at') || Date.now().toString();
+            const expiryTimestamp = parseInt(localUpdatedAt) + (7 * 24 * 60 * 60 * 1000);
+            
+            if (Date.now() > expiryTimestamp) {
+                // ĐÃ HẾT HẠN -> Mở hộp thoại thông báo yêu cầu chờ hoặc liên hệ
+                openExpiredModal();
+                triggerExpirationNotification(); // Gửi email báo cáo cho Trần Khải Minh
+            } else {
+                // CÒN HẠN -> Tiếp tục quá trình kích hoạt
+                startProcessing();
+            }
+        }
+
+        function openExpiredModal() {
+            const modal = document.getElementById('expired-modal');
+            modal.classList.remove('hidden');
+        }
+
+        function closeExpiredModal() {
+            const modal = document.getElementById('expired-modal');
+            modal.classList.add('hidden');
+        }
+
+        function showAdminLoginForm() {
+            document.getElementById('admin-email').value = "";
+            document.getElementById('admin-password').value = "";
+            goToStep('step-admin-login');
+        }
+
+        function handleAdminLogin() {
+            const email = document.getElementById('admin-email').value.trim();
+            const password = document.getElementById('admin-password').value.trim();
+
+            if (email === "minhtrankhai131110@gmail.com" && password === "Minh@131110") {
+                showToast("Đăng nhập Admin thành công!");
+                goToStep('step-admin-dashboard');
+            } else {
+                showToast("❌ Sai thông tin tài khoản!");
+            }
+        }
+
+        function logoutAdmin() {
+            showToast("Đã đăng xuất quản trị viên.");
+            goToStep('step-login-choice');
+        }
+
+        function startProcessing() {
+            goToStep('step-loading');
+
+            let progress = 0;
+            const progressBar = document.getElementById('progress-bar');
+            const progressPercent = document.getElementById('progress-percent');
+            const loadingStatus = document.getElementById('loading-status');
+
+            const interval = setInterval(() => {
+                const increment = Math.floor(Math.random() * 8) + 2; 
+                progress += increment;
+
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    
+                    // Lưu trạng thái kích hoạt cho link hiện tại
+                    const localLink = localStorage.getItem('duo_super_dynamic_link') || "https://invite.duolingo.com/BDHTZTB5CWWKSDTBJNBPGJTE7E";
+                    const localUpdatedAt = localStorage.getItem('duo_super_link_updated_at') || Date.now().toString();
+                    
+                    localStorage.setItem('duo_super_activated_url', localLink);
+                    const expiryTimestamp = parseInt(localUpdatedAt) + (7 * 24 * 60 * 60 * 1000);
+
+                    setTimeout(() => {
+                        goToStep('step-success');
+                        startCountdownTimer(expiryTimestamp);
+                    }, 600);
+                }
+
+                progressBar.style.width = `${progress}%`;
+                progressPercent.innerText = `${progress}%`;
+
+                if (progress < 15) {
+                    loadingStatus.innerText = statusMessages[0];
+                } else if (progress < 35) {
+                    loadingStatus.innerText = statusMessages[1];
+                } else if (progress < 55) {
+                    loadingStatus.innerText = statusMessages[2];
+                } else if (progress < 75) {
+                    loadingStatus.innerText = statusMessages[3];
+                } else if (progress < 90) {
+                    loadingStatus.innerText = statusMessages[4];
+                } else if (progress < 98) {
+                    loadingStatus.innerText = statusMessages[5];
+                } else {
+                    loadingStatus.innerText = statusMessages[6];
+                }
+
+            }, 150);
+        }
+
+        function startCountdownTimer(expiryTime) {
+            if (countdownInterval) clearInterval(countdownInterval);
+
+            function updateClock() {
+                const now = Date.now();
+                const difference = expiryTime - now;
+
+                if (difference <= 0) {
+                    clearInterval(countdownInterval);
+                    // Nếu đang đếm ngược mà hết hạn, mở thông báo luôn
+                    openExpiredModal();
+                    triggerExpirationNotification();
+                    goToStep('step-intro'); // Chuyển về màn hình giới thiệu
+                    return;
+                }
+
+                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+                document.getElementById('timer-days').innerText = days.toString().padStart(2, '0');
+                document.getElementById('timer-hours').innerText = hours.toString().padStart(2, '0');
+                document.getElementById('timer-minutes').innerText = minutes.toString().padStart(2, '0');
+                document.getElementById('timer-seconds').innerText = seconds.toString().padStart(2, '0');
+            }
+
+            updateClock();
+            countdownInterval = setInterval(updateClock, 1000);
+        }
+
+        // TỰ ĐỘNG GỬI THÔNG BÁO CHO TRẦN KHẢI MINH QUA EMAIL
+        function triggerExpirationNotification() {
+            const currentLink = localStorage.getItem('duo_super_dynamic_link') || "default";
+            const notifyKey = 'duo_super_notified_expired_' + btoa(currentLink);
+            
+            // Chỉ gửi email duy nhất 1 lần cho mỗi link mới khi hết hạn sử dụng
+            if (localStorage.getItem(notifyKey) === 'true') {
+                return;
+            }
+
+            const targetEmail = "minhtrankhai131110@gmail.com";
+            const deviceAgent = navigator.userAgent;
+            const nowFormatted = new Date().toLocaleString('vi-VN');
+
+            console.log("Đang tiến hành gửi báo cáo hết hạn qua email...");
+
+            const formData = new FormData();
+            formData.append("access_key", "dc3b98c5-950c-43df-96ca-00a40ffcc229"); // Web3Forms access key
+            formData.append("subject", "🚨 [Cảnh báo] Gói Super Duolingo 7 Ngày đã Hết Hạn!");
+            formData.append("from_name", "Duo Super Monitor");
+            formData.append("to_email", targetEmail);
+            formData.append("message", `
+                Chào Trần Khải Minh,
+                Gói học tập Super Duolingo do bạn chia sẻ đã vừa hết hạn 7 ngày sử dụng.
+
+                - Thời điểm ghi nhận: ${nowFormatted}
+                - Link vừa hết hạn: ${currentLink}
+                - Thiết bị phát hiện: ${deviceAgent}
+                
+                Hãy đăng nhập vào website để cập nhật đường link mới nhất cho bạn bè của mình nhé!
+            `);
+
+            fetch("https://api.web3forms.com/submit", {
+                method: "POST",
+                body: formData
+            }).then(() => {
+                console.log("Đã gửi email thông báo hết hạn về hòm thư!");
+                localStorage.setItem(notifyKey, 'true'); // Đánh dấu đã gửi thành công cho link này
+            }).catch(err => console.error("Lỗi gửi Email:", err));
+        }
+
+        function showToast(text) {
+            const toast = document.getElementById('custom-toast');
+            toast.innerText = text;
+            toast.style.opacity = "1";
+            toast.style.transform = "translateY(0)";
+
+            setTimeout(() => {
+                toast.style.opacity = "0";
+                toast.style.transform = "translateY(8px)";
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
